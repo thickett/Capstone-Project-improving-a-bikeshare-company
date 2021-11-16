@@ -1,0 +1,68 @@
+## combine the quarterly databases into one large database
+
+CREATE TABLE largedatatests.Trips_2019_capstone.Trips_2019_FULL_YEAR AS
+SELECT *
+FROM largedatatests.Trips_2019_capstone.Trips_2019Q1 Q1
+
+UNION ALL
+SELECT *
+FROM largedatatests.Trips_2019_capstone.trips_2019Q2 Q2
+
+UNION ALL
+SELECT *
+FROM largedatatests.Trips_2019_capstone.trips_2019Q3 Q3
+
+UNION ALL
+SELECT *
+FROM largedatatests.Trips_2019_capstone.TRIPS_2019Q4 Q4
+
+ORDER BY trip_id ASC
+
+------------------------------------------------------------------------------------------------------------
+
+## check to see if there are any duplicate records
+
+SELECT DISTINCT(COUNT (*)) dist, COUNT(*) total
+FROM largedatatests.Trips_2019_capstone.Trips_2019_FULL_YEAR
+
+----------------------------------------------------------------------------------------------------------------
+## checking for null values in all columns exept gender and birthyear
+
+SELECT COUNT (*)
+FROM largedatatests.Trips_2019_capstone.Trips_2019_FULL_YEAR
+WHERE trip_id IS NULL OR start_time IS NULL or end_time IS NULL or bikeid IS NULL
+    OR tripduration IS NULL OR from_station_id IS NULL OR to_station_id IS NULL 
+    OR usertype IS NULL;
+
+
+------------------------------------------------------------------------------------------------------------
+
+
+
+##  calc the % of trips that were taken by a subscriber for 2019.
+
+SELECT usertype ,COUNT(*) user_count
+FROM largedatatests.Trips_2019_capstone.Trips_2019_FULL_YEAR
+
+GROUP BY usertype;
+
+SELECT ((
+    SELECT COUNT(usertype)
+    FROM largedatatests.Trips_2019_capstone.Trips_2019_FULL_YEAR
+    WHERE usertype="Subscriber"
+) / COUNT(usertype)) *100 AS PCT_Subscribed
+
+FROM largedatatests.Trips_2019_capstone.Trips_2019_FULL_YEAR
+
+output: 
+
+Row	usertype	user_count	
+1	Subscriber	2937367
+2	Customer	880637
+
+Row	PCT_Subscribed	
+1	76.93462343151029
+
+---------------------------------------------------------------------
+
+
