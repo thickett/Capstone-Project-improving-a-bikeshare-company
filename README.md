@@ -11,5 +11,5 @@ I utilised many of the skills i learnt on the course aswell as several others to
   *  Violin graphs
   *  A variety of visually apealing bar charts
 * the entireity of my code used in both R and SQL
-
+!(https://github.com/thickett/Callum_Thickett_portfolio/blob/main/images/combined_viz.PNG)
 
